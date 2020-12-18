@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>OBSRemoteAbout</class>
- <widget class="QDialog" name="OBSRemoteAbout">
+ <widget class="QWidget" name="OBSRemoteAbout">
+  <property name="modal" stdset="0">
+   <bool>false</bool>
+  </property>
   <property name="windowModality">
    <enum>Qt::WindowModal</enum>
   </property>
@@ -43,9 +46,6 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <property name="modal">
-   <bool>false</bool>
-  </property>
   <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
@@ -79,6 +79,9 @@
         <property name="text">
          <string>OBSRemote.Settings.AboutLabel</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
        </widget>
       </item>
       <item>
@@ -97,7 +100,10 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Copyrifht 2020 Leonid Kuzin (aka DgINC)</string>
+         <string>Copyright 2020 Leonid Kuzin (aka DgINC)</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>

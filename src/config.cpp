@@ -24,36 +24,42 @@
  */
 
 #include "config.hpp"
+
 namespace OBSRemote {
-Config::Config() : server_enable_(false), dns_sd_enable_(false) {
-	const char* path = obs_module_file("config.json");
-	buf = obs_data_create_from_json_file(path);
+Config::Config() : server_enable_(false), dns_sd_enable_(false), port_(1) {
+	//if(!obs_module_config_path("config.json")) {
+		SetDefault();
+	//}
+	//Load();
 }
 
-Config::~Config(){
-}
+Config::~Config(){}
 
-void Config::LoadConfig() {
+void Config::Load() {
+	BPtr<char> config_path_ = obs_module_config_path("config.json");
+	buf = obs_data_create_from_json_file(config_path_);
 	server_enable_ = obs_data_get_bool(buf, "ServerEnable");
 	dns_sd_enable_ = obs_data_get_bool(buf, "DNSSDEnable");
 	port_ = obs_data_get_int(buf, "ServerRPCPort");
+	bfree(config_path_);
+	obs_data_release(buf);
 }
 
 void Config::SaveConfig() {
 	obs_data_set_bool(buf, "ServerEnable", server_enable_ );
 	obs_data_set_bool(buf, "DNSSDEnable", dns_sd_enable_);
 	obs_data_set_int(buf, "ServerRPCPort", port_);
-	const char* path = obs_module_file("config.json");
-	obs_data_save_json(buf, path);
+	char* config_path_ = obs_module_config_path("config.json");
+	obs_data_save_json(buf, config_path_);
+	bfree(config_path_);
 }
 
 void Config::SetDefault() {
-	obs_data_set_default_bool(buf, "ServerEnable", false);
-	obs_data_set_default_bool(buf, "DNSSDEnable", false);
-	obs_data_set_default_int(buf, "ServerRPCPort", 585);
-	const char* path = obs_module_file("config.json");
-	obs_data_save_json(buf, path);
+	char* path_ = obs_module_file("config.json");
+	char* config_path_ = obs_module_config_path("config.json");
+	buf = obs_data_create_from_json_file(path_);
+	obs_data_save_json(buf, config_path_);
+	bfree(path_);
+	bfree(config_path_);
 }
-
-
 }

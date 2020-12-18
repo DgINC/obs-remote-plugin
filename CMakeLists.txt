@@ -29,7 +29,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/findavahi2.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetUpConfigurations.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
@@ -51,7 +51,7 @@ endif()
 add_definitions(${QT_DEFINITIONS})
 
 find_package(LibObs 26.0.2 REQUIRED)
-find_package(Qt5 5.15.2 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt5 5.15.2 REQUIRED COMPONENTS Core Widgets Network)
 find_package(gRPC 1.33.2 REQUIRED)
 
 
@@ -82,10 +82,13 @@ target_link_libraries(obs-remote
     libobs
     Qt5::Widgets
     Qt5::Core
+    Qt5::Network
 )
 
 if(UNIX AND NOT APPLE)
 	include(GNUInstallDirs)
+	include(CheckCCompilerFlag)
+	include(CheckCXXCompilerFlag)
 
 	set_target_properties(obs-remote PROPERTIES PREFIX "")
 	target_link_libraries(obs-remote obs-frontend-api)

@@ -26,6 +26,9 @@
 #include <obs-module.h>
 #include <obs-frontend-api.h>
 #include <obs-data.h>
+#include <util/bmem.h>
+#include <util/platform.h>
+#include <util/util.hpp>
 
 #define blog(level, msg, ...) blog(level, "[obs-remote] " msg, ##__VA_ARGS__)
 

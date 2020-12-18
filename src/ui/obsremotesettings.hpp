@@ -39,12 +39,14 @@ namespace OBSRemote::Frontend {
 
 	public:
 		explicit OBSRemoteSettings(QWidget* parent = nullptr);
+		virtual ~OBSRemoteSettings();
 		void ToggleShowHide();
 		void showEvent(QShowEvent* event);
 
 	private:
 		QScopedPointer<Ui::OBSRemoteSettings, QScopedPointerPodDeleter> m_ui;
 		Config* config;
+		QStringList eths;
 	private Q_SLOTS:
 		void FormCanceled();
 		void FormAccepted();

@@ -33,13 +33,13 @@ class Config {
 public:
 	bool server_enable_;
 	bool dns_sd_enable_;
-	int8_t port_;
+	uint16_t port_;
 	
 	Config();
 	virtual ~Config();
-	void LoadConfig();
 	void SaveConfig();
 	void SetDefault();
+	void Load();
 private:
 	obs_data_t* buf;
 };
