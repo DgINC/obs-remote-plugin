@@ -26,6 +26,7 @@
 #include "obsremote.hpp"
 #include "ui/obsremotesettings.hpp"
 
+
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE("obs-remote", "en-US")
 

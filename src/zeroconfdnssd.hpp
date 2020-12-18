@@ -55,9 +55,9 @@ private:
 	int error;
     
 	void create_services(AvahiClient *c) noexcept;
-	static void avahi_entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, AVAHI_GCC_UNUSED void *userdata) noexcept;
+	static void avahi_entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state, void *userdata) noexcept;
 	void entry_group_callback(AvahiEntryGroup *g, AvahiEntryGroupState state) noexcept;
-	static void avahi_client_callback(AvahiClient *c, AvahiClientState state, AVAHI_GCC_UNUSED void * userdata) noexcept;
+	static void avahi_client_callback(AvahiClient *c, AvahiClientState state, void * userdata) noexcept;
 	void client_callback(AvahiClient *c, AvahiClientState state) noexcept;
     
 public:

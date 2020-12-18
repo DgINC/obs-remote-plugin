@@ -27,25 +27,29 @@
 #define OBSREMOTESETTINGS_H
 
 #include <QtWidgets/QWidget>
+#include <QAction>
 #include <QScopedPointer>
 
+#include "../config.hpp"
 #include "ui_obsremotesettings.h"
 
-namespace OBSRemote {
-	namespace Frontend {
-		class OBSRemoteSettings : public QWidget
-		{
-			Q_OBJECT
+namespace OBSRemote::Frontend {
+	class OBSRemoteSettings : public QWidget{
+		Q_OBJECT
 
-		public:
-			explicit OBSRemoteSettings(QWidget* parent = 0);
-			~OBSRemoteSettings();
-			void ToggleShowHide();
+	public:
+		explicit OBSRemoteSettings(QWidget* parent = nullptr);
+		void ToggleShowHide();
+		void showEvent(QShowEvent* event);
 
-		private:
-			QScopedPointer<Ui::OBSRemoteSettingsDialog, QScopedPointerPodDeleter> m_ui;
-		};
-	}
+	private:
+		QScopedPointer<Ui::OBSRemoteSettings, QScopedPointerPodDeleter> m_ui;
+		Config* config;
+	private Q_SLOTS:
+		void FormCanceled();
+		void FormAccepted();
+		void OpenAbout();
+	};
 }
 
 #endif // OBSREMOTESETTINGS_H

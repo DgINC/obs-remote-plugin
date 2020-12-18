@@ -23,44 +23,37 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <QtWidgets/QWidget>
-
-#include "obsremotesettings.hpp"
-#include "obsremoteabout.hpp"
-#include "ui_obsremotesettings.h"
-#include <qglobal.h>
-
-namespace OBSRemote::Frontend {
-OBSRemoteSettings::OBSRemoteSettings(QWidget* parent) : QWidget(parent, Qt::Dialog), m_ui(new Ui::OBSRemoteSettings), config(new Config) {
-	m_ui->setupUi(this);
-	
-	connect(m_ui->OkBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::FormAccepted);
-	connect(m_ui->CancelBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::FormCanceled);
-	connect(m_ui->AboutBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::OpenAbout);
+#include "config.hpp"
+namespace OBSRemote {
+Config::Config() : server_enable_(false), dns_sd_enable_(false) {
+	const char* path = obs_module_file("config.json");
+	buf = obs_data_create_from_json_file(path);
 }
 
-void OBSRemoteSettings::OpenAbout() {
-	OBSRemoteAbout* about_ = new OBSRemoteAbout(QWidget::find( this->effectiveWinId()));
-	about_->show();
+Config::~Config(){
 }
 
-void OBSRemoteSettings::FormAccepted() {
-	
+void Config::LoadConfig() {
+	server_enable_ = obs_data_get_bool(buf, "ServerEnable");
+	dns_sd_enable_ = obs_data_get_bool(buf, "DNSSDEnable");
+	port_ = obs_data_get_int(buf, "ServerRPCPort");
 }
 
-void OBSRemoteSettings::FormCanceled() {
-	close();
+void Config::SaveConfig() {
+	obs_data_set_bool(buf, "ServerEnable", server_enable_ );
+	obs_data_set_bool(buf, "DNSSDEnable", dns_sd_enable_);
+	obs_data_set_int(buf, "ServerRPCPort", port_);
+	const char* path = obs_module_file("config.json");
+	obs_data_save_json(buf, path);
 }
 
-void OBSRemoteSettings::showEvent([[maybe_unused]] QShowEvent* event) {
-	m_ui->ServerEnableChBox->setChecked(true);
+void Config::SetDefault() {
+	obs_data_set_default_bool(buf, "ServerEnable", false);
+	obs_data_set_default_bool(buf, "DNSSDEnable", false);
+	obs_data_set_default_int(buf, "ServerRPCPort", 585);
+	const char* path = obs_module_file("config.json");
+	obs_data_save_json(buf, path);
 }
 
-void OBSRemoteSettings::ToggleShowHide() {
-	if (!isVisible()) {
-		setVisible(true);
-	} else {
-		setVisible(false);
-	}
-}
+
 }

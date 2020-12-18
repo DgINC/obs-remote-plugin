@@ -23,44 +23,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <QtWidgets/QWidget>
-
-#include "obsremotesettings.hpp"
 #include "obsremoteabout.hpp"
-#include "ui_obsremotesettings.h"
-#include <qglobal.h>
+#include "ui_obsremoteabout.h"
 
-namespace OBSRemote::Frontend {
-OBSRemoteSettings::OBSRemoteSettings(QWidget* parent) : QWidget(parent, Qt::Dialog), m_ui(new Ui::OBSRemoteSettings), config(new Config) {
-	m_ui->setupUi(this);
-	
-	connect(m_ui->OkBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::FormAccepted);
-	connect(m_ui->CancelBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::FormCanceled);
-	connect(m_ui->AboutBtn, &QPushButton::clicked, this,  &OBSRemoteSettings::OpenAbout);
-}
-
-void OBSRemoteSettings::OpenAbout() {
-	OBSRemoteAbout* about_ = new OBSRemoteAbout(QWidget::find( this->effectiveWinId()));
-	about_->show();
-}
-
-void OBSRemoteSettings::FormAccepted() {
-	
-}
-
-void OBSRemoteSettings::FormCanceled() {
-	close();
-}
-
-void OBSRemoteSettings::showEvent([[maybe_unused]] QShowEvent* event) {
-	m_ui->ServerEnableChBox->setChecked(true);
-}
-
-void OBSRemoteSettings::ToggleShowHide() {
-	if (!isVisible()) {
-		setVisible(true);
-	} else {
-		setVisible(false);
+namespace OBSRemote::Frontend  {
+	OBSRemoteAbout::OBSRemoteAbout(QWidget* parent) : QWidget(parent, Qt::Dialog), m_ui(new Ui::OBSRemoteAbout) {
+		m_ui->setupUi(this);
+		connect(m_ui->OkBtn, &QPushButton::clicked, this,  &OBSRemoteAbout::FormClose);
 	}
-}
+
+	void OBSRemoteAbout::FormClose() {
+		close();
+	}
+
+	void OBSRemoteAbout::ToggleShowHide() {
+		if (!isVisible()) {
+			setVisible(true);
+		} else {
+			setVisible(false);
+		}
+	}
 }

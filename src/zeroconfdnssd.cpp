@@ -102,7 +102,7 @@ void ZeroconfDNSSD::create_services(AvahiClient *c) noexcept {
 	}
 }
 
-void ZeroconfDNSSD::avahi_client_callback(AvahiClient *c, AvahiClientState state, void* userdata) noexcept {
+void ZeroconfDNSSD::avahi_client_callback(AvahiClient *c, AvahiClientState state, [[maybe_unused]] void* userdata) noexcept {
 	ZeroconfDNSSD *discoveryManager = static_cast<ZeroconfDNSSD*>(userdata);
 	discoveryManager->client_callback(c, state);
 }
@@ -131,7 +131,7 @@ void ZeroconfDNSSD::client_callback(AvahiClient* c, AvahiClientState state) noex
 	}
 }
 
-void ZeroconfDNSSD::avahi_entry_group_callback(AvahiEntryGroup* g, AvahiEntryGroupState state, void* userdata) noexcept {
+void ZeroconfDNSSD::avahi_entry_group_callback(AvahiEntryGroup* g, AvahiEntryGroupState state, [[maybe_unused]] void* userdata) noexcept {
 	ZeroconfDNSSD *discoveryManager = static_cast<ZeroconfDNSSD*>(userdata);
 	discoveryManager->entry_group_callback(g, state);
 }

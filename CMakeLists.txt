@@ -25,13 +25,13 @@ project(obs-remote VERSION 0.0.1)
 project(obs-remote LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-include(cmake/findavahi2.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/findavahi2.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetUpConfigurations.cmake)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fpermissive -D_REENTRANT")
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH "..." FORCE)
@@ -44,14 +44,11 @@ if(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang" OR ${CMAKE_CXX_COMPILER_ID} MATCHES 
   if(COMPILER_SUPPORTS_CXX${CPP_STD})
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++${CPP_STD}")
   else()
-    message(FATAL_ERROR "ERROR: The compiler ${CMAKE_CXX_COMPILER} has no C++${CPP_STD} support.\n"
-                        "Please use a different C++ compiler.")
+    message(FATAL_ERROR "ERROR: The compiler ${CMAKE_CXX_COMPILER} has no C++${CPP_STD} support.\nPlease use a different C++ compiler.")
   endif()
 endif()
 
 add_definitions(${QT_DEFINITIONS})
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 find_package(LibObs 26.0.2 REQUIRED)
 find_package(Qt5 5.15.2 REQUIRED COMPONENTS Core Widgets)
@@ -59,16 +56,20 @@ find_package(gRPC 1.33.2 REQUIRED)
 
 
 set(OBS_REMOTE_SOURCES
+	src/config.cpp
 	src/obsremote.cpp
 	src/errorhandler.cpp
 	src/zeroconfdnssd.cpp
+	src/ui/obsremoteabout.cpp
 	src/ui/obsremotesettings.cpp
 )
 
 set(OBS_REMOTE_HEADERS
+	src/config.hpp
 	src/obsremote.hpp
 	src/errorhandler.hpp
 	src/zeroconfdnssd.hpp
+	src/ui/obsremoteabout.hpp
 	src/ui/obsremotesettings.hpp
 )
 
@@ -89,10 +90,11 @@ if(UNIX AND NOT APPLE)
 	set_target_properties(obs-remote PROPERTIES PREFIX "")
 	target_link_libraries(obs-remote obs-frontend-api)
 
-	file(GLOB locale_files data/locale/*.ini)
-	install(TARGETS obs-remote
-		LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/obs-plugins")
+	file(GLOB language_files ${CMAKE_SOURCE_DIR}/data/locale/* *.ini)
+	file(GLOB config_files LIST_DIRECTORIES false ${CMAKE_SOURCE_DIR}/data/* *.json)
 
-	install(FILES ${locale_files}
-		DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/obs/obs-plugins/obs-websocket/locale")
+	install(TARGETS obs-remote LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}/obs-plugins")
+	
+	install(FILES ${config_files} DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/obs/obs-plugins/obs-remote")
+	install(FILES ${language_files} DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/obs/obs-plugins/obs-remote/locale")
 endif()
