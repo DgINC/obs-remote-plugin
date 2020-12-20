@@ -29,19 +29,18 @@
 #include "obsremote.hpp"
 
 namespace OBSRemote {
-class Config {
-public:
-	bool server_enable_;
-	bool dns_sd_enable_;
-	uint16_t port_;
-	
-	Config();
-	virtual ~Config();
-	void SaveConfig();
-	void SetDefault();
-	void Load();
-private:
-	obs_data_t* buf;
-};
+	class Config {
+	public:
+		bool server_enable_;
+		bool dns_sd_enable_;
+		uint16_t port_;
+		
+		Config();
+		virtual ~Config();
+		void Save();
+		void Load();
+	private:
+		OBSData settings;
+	};
 }
 #endif // CONFIG_H

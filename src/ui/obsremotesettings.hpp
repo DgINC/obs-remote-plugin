@@ -47,7 +47,7 @@ namespace OBSRemote::Frontend {
 		QScopedPointer<Ui::OBSRemoteSettings, QScopedPointerPodDeleter> m_ui;
 		Config* config;
 		QStringList eths;
-	private Q_SLOTS:
+	private slots:
 		void FormCanceled();
 		void FormAccepted();
 		void OpenAbout();

@@ -63,7 +63,7 @@ void OBSRemoteSettings::FormAccepted() {
 	config->server_enable_ = m_ui->ServerEnableChBox->isChecked();
 	config->dns_sd_enable_ = m_ui->DNSDEnableChBox->isChecked();
 	config->port_ = m_ui->ServerPortBox->value();
-	config->SaveConfig();
+	config->Save();
 	close();
 }
 
@@ -79,10 +79,6 @@ void OBSRemoteSettings::showEvent([[maybe_unused]] QShowEvent* event) {
 }
 
 void OBSRemoteSettings::ToggleShowHide() {
-	if (!isVisible()) {
-		setVisible(true);
-	} else {
-		setVisible(false);
-	}
+	setVisible(!isVisible());
 }
 }
