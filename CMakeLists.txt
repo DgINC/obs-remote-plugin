@@ -25,9 +25,7 @@ project(obs-remote VERSION 0.0.1)
 project(obs-remote LANGUAGES C CXX)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/findavahi2.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/SetUpConfigurations.cmake)
-INCLUDE(FindProtobuf)
+include(SetUpConfigurations)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
@@ -54,6 +52,7 @@ add_definitions(${QT_DEFINITIONS})
 find_package(LibObs 26.0.2 REQUIRED)
 find_package(Qt5 5.15.2 REQUIRED COMPONENTS Core Widgets Network)
 find_package(Threads REQUIRED)
+find_package(Avahi REQUIRED)
 
 
 set(OBS_REMOTE_SOURCES
